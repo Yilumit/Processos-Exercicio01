@@ -29,14 +29,11 @@ public class RedesController {
 				while (linha != null) {
 					
 					if (linha.contains("Adaptador")) {
-//						sBuffer.append(linha);
 						adaptador = linha;
 					}
 					if (linha.contains("IPv4")) {
-//						sBuffer.append(linha);
-						adaptador = adaptador + linha;
-						System.out.println(adaptador);
-						adaptador = "";
+						String[] ipv4 = linha.split(": ");
+						System.out.println(adaptador+"\nIPv4: "+ipv4[1]);
 					}
 					linha = buffer.readLine();
 				}
