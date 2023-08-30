@@ -77,8 +77,29 @@ public class RedesController {
 		}
 	}
 	
-	public void ping() {
-		
+	public void ping(String url) {
+		 String os = os();
+    if (os.contains("Windows")){
+      try{
+        StringBuffer bufferS = new StringBuffer();
+        bufferS.append("ping -4 -n 10 ");
+        bufferS.append("url");
+        Process pingIpv4 = Runtime.getRuntime().exec(bufferS.toString()); //Faz a chamada do ping por ipv4 da url recebida como parâmetro 
+ 
+				InputStream fluxo = pingIpv4.getInputStream();
+     InputStreamReader leitor = new InputStreamReader(fluxo);
+     BufferReader bufferR = new BufferReader(leitor);
+     String linha = bufferR.readLine();
+
+     while (linha != null){
+        
+     }
+      } catch {
+
+      }
+
+  }
+
 	}
 	
 }
