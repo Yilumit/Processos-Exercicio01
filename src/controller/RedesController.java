@@ -78,28 +78,52 @@ public class RedesController {
 	}
 	
 	public void ping(String url) {
-		 String os = os();
-    if (os.contains("Windows")){
-      try{
-        StringBuffer bufferS = new StringBuffer();
-        bufferS.append("ping -4 -n 10 ");
-        bufferS.append("url");
-        Process pingIpv4 = Runtime.getRuntime().exec(bufferS.toString()); //Faz a chamada do ping por ipv4 da url recebida como parâmetro 
- 
-				InputStream fluxo = pingIpv4.getInputStream();
-     InputStreamReader leitor = new InputStreamReader(fluxo);
-     BufferReader bufferR = new BufferReader(leitor);
-     String linha = bufferR.readLine();
+		String os = os();
+//		String[] pingMedio = new String[4];
+		String coman;
+		if (os.contains("Windows")){
+			coman = "-n";
+		} else {
+			coman = "-c";
+		}
+		try{
+			StringBuffer bufferS = new StringBuffer();
+			bufferS.append("ping -4 -n 10 ");
+			bufferS.append(url);
+			Process pingIpv4 = Runtime.getRuntime().exec(bufferS.toString()); //Faz a chamada do ping por ipv4 da url recebida como parâmetro 
 
-     while (linha != null){
-        
-     }
-      } catch {
-
-      }
-
-  }
-
+			InputStream fluxo = pingIpv4.getInputStream();
+			InputStreamReader leitor = new InputStreamReader(fluxo);
+			BufferedReader bufferR = new BufferedReader(leitor);
+			String linha = bufferR.readLine();
+			
+			if (os.contains("Windows")) {
+				while (linha != null){
+					if (linha.contains("Média")) {
+						String[] pingMedio = linha.split("= ");
+						System.out.println("Tempo médio do ping: "+pingMedio[2]);
+					}
+					linha = bufferR.readLine();//Lê a próxima linha
+				}
+				
+			} else {
+				while (linha != null){
+					if (linha.contains("rtt")) {
+						String[] pingMedio = linha.split("/");
+						System.out.println("Tempo médio do ping: "+pingMedio[4]);
+					}
+				}
+				
+				linha = bufferR.readLine(); //Lê a próxima linha
+			}
+			bufferR.close();
+			leitor.close();
+			fluxo.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 }
