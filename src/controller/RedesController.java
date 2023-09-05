@@ -7,10 +7,6 @@ import java.io.InputStreamReader;
 
 public class RedesController {
 
-	public RedesController() {
-		super();
-	}
-
 	private String os() {
 		String os = System.getProperty("os.name");
 		return os;
@@ -79,13 +75,8 @@ public class RedesController {
 	
 	public void ping(String url) {
 		String os = os();
-//		String[] pingMedio = new String[4];
-		String coman;
-		if (os.contains("Windows")){
-			coman = "-n";
-		} else {
-			coman = "-c";
-		}
+		// String coman = os.contains("Windows") ? "-n" : "-c";
+
 		try{
 			StringBuffer bufferS = new StringBuffer();
 			bufferS.append("ping -4 -n 10 ");
@@ -99,9 +90,9 @@ public class RedesController {
 			
 			if (os.contains("Windows")) {
 				while (linha != null){
-					if (linha.contains("Média")) {
-						String[] pingMedio = linha.split("= ");
-						System.out.println("Tempo médio do ping: "+pingMedio[2]);
+					if (linha.contains("ms, ")) {
+						String[] pingMedio = linha.split("ms, ");
+						System.out.println("Tempo médio do ping: "+pingMedio[2].split(" = ")[1]);
 					}
 					linha = bufferR.readLine();//Lê a próxima linha
 				}
